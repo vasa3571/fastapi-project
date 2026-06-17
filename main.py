@@ -1,8 +1,30 @@
+import logging
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI, HTTPException, status
 
-from settings.db import ping
+from models import Base
 
-app = FastAPI()
+# Імпортуємо роутер продуктів
+from routers.products import router as products_router
+from settings.db import engine, ping
+
+# Базове налаштування логування в консоль
+logging.basicConfig(level=logging.INFO)
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+    yield
+    await engine.dispose()
+
+
+app = FastAPI(lifespan=lifespan)
+
+# Підключаємо роутер
+app.include_router(products_router)
 
 
 @app.get("/")
