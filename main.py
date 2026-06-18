@@ -3,28 +3,30 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, HTTPException, status
 
-from models import Base
+from routers.auth import router as auth_router
 
 # Імпортуємо роутер продуктів
 from routers.products import router as products_router
 from settings.db import engine, ping
 
-# Базове налаштування логування в консоль
+# Налаштування логування
 logging.basicConfig(level=logging.INFO)
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
+    # Блок автоматичного створення таблиць видалено!
+    # Тепер за таблиці відповідає лише Alembic.
     yield
+    # При вимкненні сервера чистимо пул з'єднань
     await engine.dispose()
 
 
 app = FastAPI(lifespan=lifespan)
 
-# Підключаємо роутер
+# Підключаємо роутери
 app.include_router(products_router)
+app.include_router(auth_router)
 
 
 @app.get("/")
