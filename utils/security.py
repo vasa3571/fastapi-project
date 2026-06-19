@@ -3,7 +3,7 @@ from passlib.context import CryptContext
 
 config = AuthXConfig()
 config.JWT_SECRET_KEY = (
-    "super-secret-key-change-in-production"  # У реальних проєктах береться з .env
+    "super-secret-key-change-in-production"  
 )
 config.JWT_ACCESS_COOKIE_NAME = "my_access_token"
 config.JWT_TOKEN_LOCATION = ["headers"]
