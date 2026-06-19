@@ -2,7 +2,7 @@ from pydantic import BaseModel, EmailStr
 
 
 class UserCreate(BaseModel):
-    name: str  # Додали, бо воно є в моделі
+    name: str 
     email: EmailStr
     password: str
 
