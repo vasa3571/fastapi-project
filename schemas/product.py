@@ -1,4 +1,3 @@
-# schemas/product.py
 from typing import Optional
 
 from pydantic import BaseModel, Field
@@ -11,12 +10,11 @@ class ProductBase(BaseModel):
     description: Optional[str] = Field(None, description="Опис товару")
 
 
-# Схема для створення (клієнт передає ці дані)
+# Схема для створенн
 class ProductCreate(ProductBase):
     pass
 
-
-# Схема для оновлення (всі поля необов'язкові)
+# Схема для оновлення
 class ProductUpdate(BaseModel):
     name: Optional[str] = Field(None, max_length=255)
     price: Optional[float] = Field(None, gt=0)
