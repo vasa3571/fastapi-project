@@ -23,7 +23,6 @@ def generate_products_report(filename: str, products: list[Product]) -> str:
     # Вміст таблиці (дані з БД)
     pdf.set_font("Arial", "", 12)
     for product in products:
-        # Для безпеки очищаємо назву від не-ASCII символів (оскільки стандартний Arial не має кирилиці)
         safe_name = (
             product.name.encode("ascii", "ignore").decode("ascii")
             or f"Product #{product.id}"
